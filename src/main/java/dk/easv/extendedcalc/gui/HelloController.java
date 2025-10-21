@@ -1,7 +1,7 @@
-package dk.easv.extendedcalc;
+package dk.easv.extendedcalc.gui;
 
+import dk.easv.extendedcalc.bll.CalculatorLogic;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -13,37 +13,37 @@ public class HelloController {
     public Label lblOperator;
 
     private double result1 = 0;
-    private String result2 = "";
+    private String result2 = "0";
     private String operator = "+";
+
+    private final CalculatorLogic calculatorLogic = new CalculatorLogic();
 
     public void onBtnClearClick(ActionEvent actionEvent) {
         result1 = 0;
-        result2 = "";
+        result2 = "0";
         operator = "+";
-        lblResult.setText("");
+        lblResult.setText(result2);
+        lblOperator.setText(operator);
     }
 
     public void onBtnPlusMinusClick(ActionEvent actionEvent) {
-        result2 = Double.parseDouble(result2) * -1 + "";
+        result2 = calculatorLogic.PlusMinus(Double.parseDouble(result2)) + "";
         lblResult.setText(result2);
     }
 
     public void onBtnPercentClick(ActionEvent actionEvent) {
 
-        result2 = Double.parseDouble(result2)/100 * result1 + "";
+        result2 = calculatorLogic.Percent(result1, Double.parseDouble(result2)) + "";
         lblResult.setText(result2);
 
     }
 
     public void onBtnDivideClick(ActionEvent actionEvent) {
-        if (result1 == 0) {
-            result1 = 1 / Double.parseDouble(result2);
-        }else{
-            result1 = result1 / Double.parseDouble(result2);
-        }
-        result2 = "";
-        lblResult.setText(result2);
         operator = "/";
+        lblOperator.setText(operator);
+        result1 = calculatorLogic.Division(result1, Double.parseDouble(result2));
+        result2 = "0";
+        lblResult.setText(result2);
     }
 
     public void onBtnSevenClick(ActionEvent actionEvent) {
@@ -74,14 +74,11 @@ public class HelloController {
     }
 
     public void onBtnMultiplyClick(ActionEvent actionEvent) {
-        if (result1 == 0) {
-            result1 = 1 * Double.parseDouble(result2);
-        }else{
-            result1 = result1 * Double.parseDouble(result2);
-        }
-        result2 = "";
-        lblResult.setText(result2);
         operator = "*";
+        lblOperator.setText(operator);
+        result1 = calculatorLogic.Multiplication(result1, Double.parseDouble(result2));
+        result2 = "0";
+        lblResult.setText(result2);
     }
 
     public void onBtnFourClick(ActionEvent actionEvent) {
@@ -112,15 +109,12 @@ public class HelloController {
     }
 
     public void onBtnMinusClick(ActionEvent actionEvent) {
-        if (result1 == 0) {
-            result1 = Double.parseDouble(result2);
-        } else {
-            result1 = result1 - Double.parseDouble(result2);
-        }
-
-        result2 = "";
-        lblResult.setText(result2);
         operator = "-";
+        lblOperator.setText(operator);
+        result1 = calculatorLogic.Subtraction(result1, Double.parseDouble(result2));
+
+        result2 = "0";
+        lblResult.setText(result2);
     }
 
     public void onBtnOneClick(ActionEvent actionEvent) {
@@ -151,16 +145,12 @@ public class HelloController {
     }
 
     public void onBtnPlusClick(ActionEvent actionEvent) {
-
-        if (result1 == 0) {
-            result1 = Double.parseDouble(result2);
-        } else {
-            result1 = result1 + Double.parseDouble(result2);
-        }
-
-        result2 = "";
-        lblResult.setText(result2);
         operator = "+";
+        lblOperator.setText(operator);
+        result1 = calculatorLogic.Addition(result1, Double.parseDouble(result2));
+
+        result2 = "0";
+        lblResult.setText(result2);
 
     }
 
@@ -180,23 +170,13 @@ public class HelloController {
     }
 
     public void onBtnCalculateClick(ActionEvent actionEvent) {
-        if (operator.equals("+")) {
-            result1 = result1 + Double.parseDouble(result2);
-            result2 = "0";
-            lblResult.setText(result1 + "");
-        } else if (operator.equals("-")) {
-            result1 = result1 - Double.parseDouble(result2);
-            result2 = "0";
-            lblResult.setText(result1 + "");
-        }  else if (operator.equals("*")) {
-            result1 = result1 * Double.parseDouble(result2);
-            result2 = "0";
-            lblResult.setText(result1 + "");
-        } else if (operator.equals("/")) {
-            result1 = result1 / Double.parseDouble(result2);
-            result2 = "0";
-            lblResult.setText(result1 + "");
-        }
+
+        result1 = calculatorLogic.Calc(result1, Double.parseDouble(result2), operator);
+        result2 = "0";
+        operator = "=";
+        lblOperator.setText(operator);
+        System.out.println(operator);
+        lblResult.setText(result1 + "");
 
     }
 }
